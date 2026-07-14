@@ -1,0 +1,25 @@
+{
+  "status": "success",
+  "url": "https://brandfolder.com/databricks/dais-2026",
+  "path": "databricks/dais-2026",
+  "timestamp": "2026-07-14T22:04:43.353Z",
+  "title": "DAIS 2026 | Databricks Asset Library Official Digital Assets | Brandfolder",
+  "template": "asset-collection",
+  "blocks": [
+    "collection-hero",
+    "asset-grid",
+    "asset-grid",
+    "asset-grid",
+    "asset-grid",
+    "asset-grid",
+    "asset-grid",
+    "asset-grid",
+    "asset-grid",
+    "asset-grid",
+    "asset-grid",
+    "asset-grid",
+    "asset-grid",
+    "asset-grid",
+    "asset-grid"
+  ]
+}
