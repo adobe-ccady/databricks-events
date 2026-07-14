@@ -1,0 +1,47 @@
+{
+  "definitions": [
+    {
+      "title": "Collection Hero",
+      "id": "collection-hero",
+      "plugins": {
+        "xwalk": {
+          "page": {
+            "resourceType": "core/franklin/components/block/v1/block",
+            "template": {
+              "name": "Collection Hero",
+              "model": "collection-hero"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "models": [
+    {
+      "id": "collection-hero",
+      "fields": [
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "title",
+          "label": "Collection Title"
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "breadcrumb",
+          "label": "Breadcrumb",
+          "description": "Slash-separated path, e.g. databricks / dais-2026"
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "assetCount",
+          "label": "Asset Count Label",
+          "description": "e.g. 448 Assets"
+        }
+      ]
+    }
+  ],
+  "filters": []
+}

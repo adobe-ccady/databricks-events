@@ -34,6 +34,12 @@
     ]
   },
   {
+    "id": "asset-grid",
+    "components": [
+      "asset-card"
+    ]
+  },
+  {
     "id": "cards",
     "components": [
       "card"
