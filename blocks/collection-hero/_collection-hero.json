@@ -29,16 +29,36 @@
         {
           "component": "text",
           "valueType": "string",
-          "name": "breadcrumb",
-          "label": "Breadcrumb",
-          "description": "Slash-separated path, e.g. databricks / dais-2026"
+          "name": "assetCount",
+          "label": "Asset Count Label",
+          "description": "e.g. 448 Assets"
         },
         {
           "component": "text",
           "valueType": "string",
-          "name": "assetCount",
-          "label": "Asset Count Label",
-          "description": "e.g. 448 Assets"
+          "name": "collectionsLabel",
+          "label": "Collections Dropdown Label",
+          "description": "e.g. 3 Collections"
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "shareLabel",
+          "label": "Share Action Label",
+          "description": "e.g. Share Collection"
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "backLabel",
+          "label": "Back Button Label",
+          "description": "e.g. Back to Brand Portal homepage"
+        },
+        {
+          "component": "aem-content",
+          "valueType": "string",
+          "name": "backHref",
+          "label": "Back Button Link"
         }
       ]
     }

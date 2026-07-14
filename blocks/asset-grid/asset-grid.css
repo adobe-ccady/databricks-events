@@ -1,119 +1,267 @@
+/* asset-grid -- DAM section: header + dense card grid, matched to brandfolder.com card-view */
+
+.asset-grid {
+  --card-border: #e5e5e5;
+  --card-muted: #4a4a4a;
+  --card-accent: #4462c9;
+
+  margin: 0 0 40px;
+}
+
+/* --- Section header --- */
+.asset-grid .asset-grid-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--card-border);
+  margin-bottom: 16px;
+}
+
+.asset-grid .asset-grid-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.asset-grid .asset-grid-section-title {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 400;
+  color: var(--card-muted);
+  text-transform: none;
+  letter-spacing: 0;
+  line-height: 1.2;
+}
+
+.asset-grid .asset-grid-count {
+  margin: 0;
+  font-size: 14px;
+  color: var(--card-muted);
+}
+
+/* --- Pagination --- */
+.asset-grid .asset-grid-pagination {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: auto;
+}
+
+.asset-grid .asset-grid-pagination button {
+  margin: 0;
+  border: 1px solid var(--card-border);
+  border-radius: 4px;
+  padding: 4px 10px;
+  background: #fff;
+  font-size: 13px;
+  color: var(--text-color);
+  cursor: pointer;
+  min-width: 32px;
+}
+
+.asset-grid .asset-grid-pagination button:disabled {
+  color: #bbb;
+  cursor: default;
+}
+
+.asset-grid .asset-grid-pagination button:hover:not(:disabled) {
+  background: #f2f2f2;
+}
+
+.asset-grid .asset-grid-pagination .is-active {
+  background: #1b3139;
+  border-color: #1b3139;
+  color: #fff;
+}
+
+/* --- Grid --- */
 .asset-grid .asset-grid-items {
   list-style: none;
   margin: 0;
   padding: 0;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 16px;
 }
 
+/* --- Card: single bordered box, thumbnail over a caption bar --- */
 .asset-grid .asset-card {
   position: relative;
   display: flex;
   flex-direction: column;
-  background-color: #fff;
-  border: 1px solid #e6e6e6;
-  border-radius: 3px;
+  min-width: 0;
+  border: 1px solid var(--card-border);
+  border-radius: 4px;
+  background: #fff;
   overflow: hidden;
-  transition: box-shadow 0.15s ease-in-out;
-}
-
-.asset-grid .asset-card:hover {
-  box-shadow: 0 2px 10px rgb(0 0 0 / 12%);
+  box-shadow: 0 1px 2px rgb(0 0 0 / 6%);
 }
 
 .asset-grid .asset-card-thumb {
-  line-height: 0;
-  background-color: #f4f4f4;
-  aspect-ratio: 262 / 162;
+  position: relative;
+  aspect-ratio: 4 / 3;
+
+  /* Checkered transparency pattern behind transparent logos */
+  background-color: #fff;
+  background-image:
+    linear-gradient(45deg, #ededed 25%, transparent 25%),
+    linear-gradient(-45deg, #ededed 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #ededed 75%),
+    linear-gradient(-45deg, transparent 75%, #ededed 75%);
+  background-size: 18px 18px;
+  background-position: 0 0, 0 9px, 9px -9px, -9px 0;
+}
+
+.asset-grid .asset-card-img {
+  position: absolute;
+  inset: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
+  padding: 16px;
 }
 
-.asset-grid .asset-card-thumb picture,
-.asset-grid .asset-card-thumb img {
-  width: 100%;
-  height: 100%;
-}
-
-.asset-grid .asset-card-thumb img {
+.asset-grid .asset-card-img picture,
+.asset-grid .asset-card-img img {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
   object-fit: contain;
 }
 
+/* Hidden native checkboxes (custom box rendered via sibling span) */
+.asset-grid .asset-card-caption input,
+.asset-grid .asset-grid-selectall input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.asset-grid .asset-grid-selectall {
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.asset-grid .asset-card-check {
+  display: inline-block;
+  flex: 0 0 auto;
+  width: 18px;
+  height: 18px;
+  border: 1px solid #b0b0b0;
+  border-radius: 3px;
+  background: #fff;
+  box-sizing: border-box;
+}
+
+.asset-grid .asset-card-check-sm {
+  width: 15px;
+  height: 15px;
+}
+
+.asset-grid .asset-card-caption input:checked + .asset-card-check,
+.asset-grid .asset-grid-selectall input:checked + .asset-card-check {
+  background: var(--card-accent);
+  border-color: var(--card-accent);
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path fill="white" d="M6.5 11.5 3 8l1-1 2.5 2.5L12 4l1 1z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+/* Caption bar: checkbox + name (left), paperclip count (right) */
 .asset-grid .asset-card-body {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   gap: 8px;
-  padding: 12px;
+  padding: 8px 10px;
+  border-top: 1px solid var(--card-border);
+}
+
+.asset-grid .asset-card-caption {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  flex: 1 1 auto;
+  cursor: pointer;
+}
+
+/* Paperclip attachment count (right side of caption bar) */
+.asset-grid .asset-card-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  flex: 0 0 auto;
+  font-size: 12px;
+  color: var(--card-muted);
+  line-height: 1.4;
+}
+
+.asset-grid .asset-card-clip {
+  width: 12px;
+  height: 12px;
+  background: currentcolor;
+  mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M16.5 6v11a4.5 4.5 0 0 1-9 0V5a3 3 0 0 1 6 0v10a1.5 1.5 0 0 1-3 0V6H7v9a3 3 0 0 0 6 0V5a4.5 4.5 0 0 0-9 0v12a6 6 0 0 0 12 0V6z"/></svg>') center / contain no-repeat;
 }
 
 .asset-grid .asset-card-title {
-  font-size: 14px;
-  line-height: 20px;
-  color: #333;
-  white-space: nowrap;
+  font-size: 13px;
+  color: #111;
+  line-height: 1.3;
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.asset-grid .asset-card-type {
-  flex: 0 0 auto;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.5px;
-  color: #767676;
-  background-color: #f0f0f0;
-  border-radius: 2px;
-  padding: 2px 6px;
-  text-transform: uppercase;
-}
-
+/* Optional download link */
 .asset-grid .asset-card-download {
   position: absolute;
-  top: 8px;
-  right: 8px;
-  width: 32px;
-  height: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: rgb(255 255 255 / 92%);
-  border: 1px solid #e6e6e6;
-  border-radius: 3px;
+  top: 6px;
+  right: 6px;
+  z-index: 2;
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  background: rgb(255 255 255 / 85%);
   opacity: 0;
-  transition: opacity 0.15s ease-in-out;
-  color: #4462c9;
-  text-decoration: none;
+  transition: opacity 0.15s ease;
 }
 
-.asset-grid .asset-card-download:focus-visible,
 .asset-grid .asset-card:hover .asset-card-download {
   opacity: 1;
 }
 
 .asset-grid .asset-card-download-icon {
-  width: 16px;
-  height: 16px;
-  background-color: currentcolor;
-  mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 3v10.55l3.3-3.3 1.4 1.42L12 17.4l-4.7-4.73 1.4-1.42 3.3 3.3V3h2zM5 19h14v2H5z"/></svg>') no-repeat center / contain;
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: var(--text-color);
+  mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 3v10l3-3 1.4 1.4L12 16.8 6.6 11.4 8 10l3 3V3zM5 19h14v2H5z"/></svg>') center / 16px no-repeat;
+}
+
+/* Responsive column counts */
+@media (width <= 1200px) {
+  .asset-grid .asset-grid-items {
+    grid-template-columns: repeat(5, 1fr);
+  }
 }
 
 @media (width <= 900px) {
   .asset-grid .asset-grid-items {
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    grid-template-columns: repeat(4, 1fr);
   }
 }
 
 @media (width <= 600px) {
   .asset-grid .asset-grid-items {
     grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
   }
 
-  .asset-grid .asset-card-download {
-    opacity: 1;
+  .asset-grid .asset-grid-pagination {
+    margin-left: 0;
   }
 }

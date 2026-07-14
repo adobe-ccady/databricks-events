@@ -1,0 +1,38 @@
+{
+  "variantName": "collection-hero",
+  "baseBlock": "collection-hero",
+  "version": "1.0.0",
+  "created": "2026-07-14T00:00:00.000Z",
+  "sourceContext": {
+    "originUrl": "https://brandfolder.com/databricks/dais-2026",
+    "originPage": "Brandfolder digital asset library collection page",
+    "blockPosition": "top"
+  },
+  "visualCharacteristics": {
+    "colorScheme": "light",
+    "density": "minimal",
+    "purpose": "collection-hero",
+    "imagePattern": "noimg"
+  },
+  "contentPattern": {
+    "structure": "breadcrumb + title + asset-count + share",
+    "buttonCount": 1,
+    "imageCount": 0
+  },
+  "reuseGuidance": {
+    "suitableFor": [
+      "digital asset library collection headers",
+      "brandfolder collection pages",
+      "asset portal landing headers"
+    ],
+    "notSuitableFor": [
+      "marketing hero banners with background imagery",
+      "product landing hero sections"
+    ]
+  },
+  "usage": {
+    "pagesUsing": ["/databricks/dais-2026"],
+    "reuseCount": 1,
+    "lastUsed": "2026-07-14T00:00:00.000Z"
+  }
+}

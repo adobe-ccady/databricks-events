@@ -1,0 +1,30 @@
+:root {
+  /* Brand fonts — source uses Circular (proprietary Lineto font, cannot be self-hosted).
+     Mulish is the closest free Google Font substitute (geometric sans, matching proportions),
+     loaded via head.html. Keeps the source's own Arial/Trebuchet fallbacks after it. */
+  --heading-font-family: mulish, "Circular-Medium", arial, "Trebuchet MS", sans-serif;
+  --body-font-family: mulish, "Circular-Book", arial, "Trebuchet MS", sans-serif;
+
+  /* Brand colors */
+  --background-color: #fff;
+  --text-color: #333;
+  --text-muted-color: #4a4a4a;
+  --link-color: #4462c9;
+  --link-hover-color: #2f47a0;
+  --brand-accent: #ff6200;
+  --light-color: #f8f8f8;
+  --border-color: #e5e5e5;
+
+  /* Spacing */
+  --section-padding: 24px;
+  --content-max-width: 1200px;
+  --nav-height: 64px;
+
+  /* Heading sizes (desktop) */
+  --heading-size-xxl: 40px;
+  --heading-size-xl: 30px;
+  --heading-size-l: 24px;
+  --heading-size-m: 20px;
+  --heading-size-s: 18px;
+  --heading-size-xs: 16px;
+}

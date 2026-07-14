@@ -1,0 +1,38 @@
+{
+  "variantName": "asset-grid",
+  "baseBlock": "asset-grid",
+  "version": "1.0.0",
+  "created": "2026-07-14T00:00:00.000Z",
+  "sourceContext": {
+    "originUrl": "https://brandfolder.com/databricks/dais-2026",
+    "originPage": "Brandfolder digital asset library collection page",
+    "blockPosition": "middle"
+  },
+  "visualCharacteristics": {
+    "colorScheme": "light",
+    "density": "compact",
+    "purpose": "asset-grid",
+    "imagePattern": "large"
+  },
+  "contentPattern": {
+    "structure": "repeating asset-card (thumbnail + title + file-type + download)",
+    "buttonCount": 0,
+    "imageCount": -1
+  },
+  "reuseGuidance": {
+    "suitableFor": [
+      "digital asset library collection grids",
+      "downloadable asset galleries",
+      "brandfolder collection sections"
+    ],
+    "notSuitableFor": [
+      "editorial card grids with body copy and CTAs",
+      "product listing grids with pricing"
+    ]
+  },
+  "usage": {
+    "pagesUsing": ["/databricks/dais-2026"],
+    "reuseCount": 1,
+    "lastUsed": "2026-07-14T00:00:00.000Z"
+  }
+}

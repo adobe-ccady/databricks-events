@@ -1,0 +1,30 @@
+{
+  "metadata": {
+    "projectType": "xwalk"
+  },
+  "templates": [
+    {
+      "name": "asset-collection",
+      "urls": [
+        "https://brandfolder.com/databricks/dais-2026"
+      ],
+      "representativeUrl": "https://brandfolder.com/databricks/dais-2026",
+      "coverageGaps": [],
+      "description": "Brandfolder digital asset library page: a branded hero header with title/asset count/collections, followed by a series of asset-collection sections, each with a section heading and a responsive grid of asset cards (image thumbnails with titles).",
+      "blocks": [
+        {
+          "name": "collection-hero",
+          "instances": [
+            "#m-brandfolder-show-container > div.s-brandfolder-show > div.m-brandfolder-header-container"
+          ]
+        },
+        {
+          "name": "asset-grid",
+          "instances": [
+            "article.section-container.card-view"
+          ]
+        }
+      ]
+    }
+  ]
+}
