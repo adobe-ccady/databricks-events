@@ -71,47 +71,48 @@ const seed = [
   ['Print Mechanical — Poster', 'Document', 'Graphics', 'PDF', '2026-01-15'],
 ];
 
-function cell(inner) {
-  return `<div>${inner}</div>`;
+// A hinted field cell: <!-- field:name --> before the content, per the UE
+// field-hinting rules, so Universal Editor can bind the cell to the model.
+function fieldCell(name, value) {
+  return `<div><!-- field:${name} --><p>${value}</p></div>`;
 }
 
-// A field cell wraps its value in a <p> (matching importer output). Image cells
-// wrap a <picture><img>.
-function fieldCell(value) {
-  return cell(`<p>${value}</p>`);
+// Image cell: hint + <picture><img alt>. The alt collapses onto the <img>
+// (imageAlt is a collapsed field — it must NOT get its own cell).
+function imageCell(name, src, alt) {
+  return `<div><!-- field:${name} --><p><picture><img src="${src}" alt="${alt}"></picture></p></div>`;
 }
 
-function imageCell(src, alt) {
-  return cell(`<p><picture><img src="${src}" alt="${alt}"></picture></p>`);
+// Config rows are single-cell rows carrying one container field each.
+function configRow(name, value) {
+  return `<div>${fieldCell(name, value)}</div>`;
 }
 
-function configRow(value) {
-  // config rows are single-cell rows
-  return `<div>${cell(`<p>${value}</p>`)}</div>`;
-}
-
+// One asset-item row. Field order/hints mirror the asset-item model:
+// image (alt collapsed), title, type, category, format, date, download.
+// imageAlt is intentionally omitted as a cell — it rides on <img alt>.
 function itemRow([name, type, category, format, date]) {
   const c = categories[category] || { bg: '#eee', fg: '#333' };
   const src = thumb(format, c.bg, c.fg);
-  const dl = `/content/dam/databricks/${name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}.${format.toLowerCase()}`;
+  const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+  const dl = `/content/dam/databricks/${slug}.${format.toLowerCase()}`;
   return `<div>${
-    imageCell(src, name)
-  }${fieldCell(name) // imageAlt reuse omitted; alt already on img — but model expects alt cell next
-  }${fieldCell(name)
-  }${fieldCell(type)
-  }${fieldCell(category)
-  }${fieldCell(format)
-  }${fieldCell(date)
-  }${cell(`<p><a href="${dl}">${dl}</a></p>`)
-  }</div>`;
+    imageCell('image', src, name)
+  }${fieldCell('title', name)
+  }${fieldCell('type', type)
+  }${fieldCell('category', category)
+  }${fieldCell('format', format)
+  }${fieldCell('date', date)
+  }<div><!-- field:download --><p><a href="${dl}">${dl}</a></p></div>`
+  + '</div>';
 }
 
 const rows = [];
-// config rows first
-rows.push(configRow(config.title));
-rows.push(configRow(config.breadcrumb));
-rows.push(configRow(config.searchPlaceholder));
-rows.push(configRow(config.pageSize));
+// config rows first (asset-library container fields)
+rows.push(configRow('title', config.title));
+rows.push(configRow('breadcrumb', config.breadcrumb));
+rows.push(configRow('searchPlaceholder', config.searchPlaceholder));
+rows.push(configRow('pageSize', config.pageSize));
 // item rows
 seed.forEach((s) => rows.push(itemRow(s)));
 
@@ -123,3 +124,74 @@ fs.mkdirSync(outDir, { recursive: true });
 const outFile = path.join(outDir, 'asset-share-commons.plain.html');
 fs.writeFileSync(outFile, html);
 console.log(`Wrote ${outFile} (${seed.length} assets)`);
+
+// --- JCR XML (Universal Editor authoring source) --------------------------
+// Mirrors the rendered content as JCR nodes so Universal Editor can bind each
+// block/item to its model. Structure matches the project's franklin JCR
+// conventions (page > jcr:content > root > section > block > item_N).
+function xmlAttr(v) {
+  return String(v)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+const RT_BLOCK = 'core/franklin/components/block/v1/block';
+const RT_ITEM = 'core/franklin/components/block/v1/block/item';
+
+const itemNodes = seed.map(([name, type, category, format, date], i) => {
+  const c = categories[category] || { bg: '#eee', fg: '#333' };
+  const src = thumb(format, c.bg, c.fg);
+  const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+  const dl = `/content/dam/databricks/${slug}.${format.toLowerCase()}`;
+  const attrs = [
+    'jcr:primaryType="nt:unstructured"',
+    `sling:resourceType="${RT_ITEM}"`,
+    'name="Asset Item"',
+    'model="asset-item"',
+    'modelFields="[image,imageAlt,title,type,category,format,date,download]"',
+    `image="${xmlAttr(src)}"`,
+    `imageAlt="${xmlAttr(name)}"`,
+    `title="${xmlAttr(name)}"`,
+    `type="${xmlAttr(type)}"`,
+    `category="${xmlAttr(category)}"`,
+    `format="${xmlAttr(format)}"`,
+    `date="${xmlAttr(date)}"`,
+    `download="${xmlAttr(dl)}"`,
+  ].join(' ');
+  return `        <item_${i} ${attrs}></item_${i}>`;
+}).join('\n');
+
+const blockAttrs = [
+  `sling:resourceType="${RT_BLOCK}"`,
+  'jcr:primaryType="nt:unstructured"',
+  'filter="asset-library"',
+  'model="asset-library"',
+  'modelFields="[title,breadcrumb,searchPlaceholder,pageSize]"',
+  'name="Asset Library"',
+  `title="${xmlAttr(config.title)}"`,
+  `breadcrumb="${xmlAttr(config.breadcrumb)}"`,
+  `searchPlaceholder="${xmlAttr(config.searchPlaceholder)}"`,
+  `pageSize="${xmlAttr(config.pageSize)}"`,
+].join(' ');
+
+const xml = `<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0" xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:sling="http://sling.apache.org/jcr/sling/1.0" jcr:primaryType="cq:Page">
+  <jcr:content cq:template="/libs/core/franklin/templates/page" sling:resourceType="core/franklin/components/page/v1/page" jcr:primaryType="cq:PageContent" jcr:title="${xmlAttr(config.title)}" modelFields="[jcr:title,jcr:description,keywords]">
+    <root jcr:primaryType="nt:unstructured" sling:resourceType="core/franklin/components/root/v1/root">
+      <section sling:resourceType="core/franklin/components/section/v1/section" jcr:primaryType="nt:unstructured" model="section" modelFields="[name,style]">
+        <block ${blockAttrs}>
+${itemNodes}
+        </block>
+      </section>
+    </root>
+  </jcr:content>
+</jcr:root>
+`;
+
+const jcrDir = path.join(process.cwd(), 'migration-work', 'jcr-content', 'databricks');
+fs.mkdirSync(jcrDir, { recursive: true });
+const xmlFile = path.join(jcrDir, 'asset-share-commons.xml');
+fs.writeFileSync(xmlFile, xml);
+console.log(`Wrote ${xmlFile} (UE-authorable JCR)`);

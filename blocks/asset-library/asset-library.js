@@ -9,9 +9,13 @@ function cellText(cell) {
 
 // The first rows carry the block's own config fields (title, breadcrumb,
 // searchPlaceholder, pageSize) as single-cell rows; asset items are multi-cell
-// rows led by an image. We detect an item row by the presence of a picture/img.
+// rows (image, title, type, category, format, date, download). Detect an item
+// row by its cell count — NOT by the presence of an image, since the image
+// field may be empty (e.g. an author left it blank, or a data-URI value was
+// dropped during AEM/JCR ingestion), which previously misclassified every item
+// as a config row and yielded "0 assets".
 function isItemRow(row) {
-  return !!row.querySelector('picture, img');
+  return row.children.length > 1;
 }
 
 function icon(name) {
@@ -53,13 +57,14 @@ function parseAssets(block) {
   [...block.children].forEach((row) => {
     if (isItemRow(row)) {
       const cells = [...row.children];
-      // Field order mirrors the asset-item model.
-      const [imageCell, altCell, titleCell, typeCell,
+      // Field order mirrors the asset-item model. imageAlt is a collapsed field:
+      // it rides on the <img alt> attribute, so there is no separate alt cell.
+      const [imageCell, titleCell, typeCell,
         categoryCell, formatCell, dateCell, downloadCell] = cells;
       const img = imageCell?.querySelector('img') || null;
       assets.push({
         img,
-        alt: cellText(altCell) || (img?.getAttribute('alt') || ''),
+        alt: img?.getAttribute('alt') || '',
         title: cellText(titleCell),
         type: cellText(typeCell) || 'Image',
         category: cellText(categoryCell),
@@ -272,6 +277,17 @@ export default function decorate(block) {
       const clone = asset.img.cloneNode(true);
       const optimized = makeExternalSafe(clone);
       imgHolder.append(optimized || clone);
+    } else {
+      // No thumbnail (image field empty, or a data-URI value was dropped by
+      // AEM/JCR ingestion). Render a CSS placeholder keyed by file format so
+      // every card still shows a thumbnail. Uses data-* attributes only, so it
+      // survives regardless of the content source.
+      thumb.classList.add('is-placeholder');
+      thumb.dataset.format = asset.format || asset.type || '';
+      const ph = document.createElement('span');
+      ph.className = 'asset-library-card-placeholder';
+      ph.textContent = asset.format || asset.type || 'Asset';
+      imgHolder.append(ph);
     }
     const typeBadge = document.createElement('span');
     typeBadge.className = 'asset-library-card-type';

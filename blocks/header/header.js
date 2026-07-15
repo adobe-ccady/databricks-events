@@ -67,7 +67,6 @@ export default async function decorate(block) {
   tools.className = 'nav-tools';
 
   const learnMore = buildDropdown('Learn More', [
-    { label: 'Brandfolder Help', href: LEARN_MORE_HREF },
     { label: 'Getting Started', href: LEARN_MORE_HREF },
   ]);
   learnMore.classList.add('nav-learn-more');

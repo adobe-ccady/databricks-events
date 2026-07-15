@@ -321,6 +321,26 @@ main .section.asset-library-container > div {
   object-fit: contain;
 }
 
+/* CSS placeholder thumbnail (shown when the image field is empty) */
+.asset-library-card-thumb.is-placeholder {
+  background: linear-gradient(135deg, #fff5ee 0%, #ffe6d4 100%);
+}
+
+.asset-library-card-placeholder {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 64px;
+  padding: 10px 16px;
+  border-radius: 6px;
+  background: var(--brand-accent, #ff6200);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
 .asset-library-card-type {
   position: absolute;
   top: 8px;
