@@ -218,6 +218,138 @@
     ]
   },
   {
+    "id": "asset-library",
+    "fields": [
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "title",
+        "label": "Library Title",
+        "description": "Heading shown above the toolbar, e.g. Brand Asset Library"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "breadcrumb",
+        "label": "Breadcrumb",
+        "description": "Slash-separated path, e.g. Home / Databricks / Assets"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "searchPlaceholder",
+        "label": "Search Placeholder",
+        "description": "Placeholder text for the search bar, e.g. Search assets"
+      },
+      {
+        "component": "select",
+        "valueType": "string",
+        "name": "pageSize",
+        "label": "Assets Per Page",
+        "value": "12",
+        "options": [
+          {
+            "name": "8",
+            "value": "8"
+          },
+          {
+            "name": "12",
+            "value": "12"
+          },
+          {
+            "name": "16",
+            "value": "16"
+          },
+          {
+            "name": "24",
+            "value": "24"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "asset-item",
+    "fields": [
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "image",
+        "label": "Thumbnail",
+        "multi": false
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "imageAlt",
+        "label": "Thumbnail Alt Text"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "title",
+        "label": "Asset Name"
+      },
+      {
+        "component": "select",
+        "valueType": "string",
+        "name": "type",
+        "label": "Asset Type",
+        "value": "Image",
+        "options": [
+          {
+            "name": "Image",
+            "value": "Image"
+          },
+          {
+            "name": "Video",
+            "value": "Video"
+          },
+          {
+            "name": "Document",
+            "value": "Document"
+          },
+          {
+            "name": "Logo",
+            "value": "Logo"
+          },
+          {
+            "name": "Template",
+            "value": "Template"
+          }
+        ]
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "category",
+        "label": "Category / Section",
+        "description": "Facet group, e.g. Event Logos, Graphics, Web"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "format",
+        "label": "File Format",
+        "description": "e.g. PNG, SVG, PDF, MP4"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "date",
+        "label": "Date Added",
+        "description": "ISO date, e.g. 2026-06-01, used for sorting"
+      },
+      {
+        "component": "aem-content",
+        "valueType": "string",
+        "name": "download",
+        "label": "Download / Asset Link",
+        "description": "Path to the downloadable asset."
+      }
+    ]
+  },
+  {
     "id": "card",
     "fields": [
       {

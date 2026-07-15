@@ -40,6 +40,12 @@
     ]
   },
   {
+    "id": "asset-library",
+    "components": [
+      "asset-item"
+    ]
+  },
+  {
     "id": "cards",
     "components": [
       "card"
