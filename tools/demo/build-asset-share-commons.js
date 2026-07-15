@@ -17,14 +17,14 @@ const INK = '#1b3139';
 
 // Simple deterministic SVG thumbnail generator (label + accent block).
 function thumb(label, bg, fg) {
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="320" height="240" viewBox="0 0 320 240">`
+  const svg = '<svg xmlns="http://www.w3.org/2000/svg" width="320" height="240" viewBox="0 0 320 240">'
     + `<rect width="320" height="240" fill="${bg}"/>`
     + `<rect x="24" y="24" width="272" height="120" rx="8" fill="${fg}" opacity="0.15"/>`
     + `<circle cx="80" cy="84" r="26" fill="${fg}" opacity="0.5"/>`
     + `<rect x="120" y="70" width="150" height="12" rx="6" fill="${fg}" opacity="0.5"/>`
     + `<rect x="120" y="94" width="110" height="12" rx="6" fill="${fg}" opacity="0.3"/>`
     + `<text x="24" y="196" font-family="Arial, sans-serif" font-size="20" font-weight="700" fill="${fg}">${label}</text>`
-    + `</svg>`;
+    + '</svg>';
   return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
 }
 
@@ -94,16 +94,16 @@ function itemRow([name, type, category, format, date]) {
   const c = categories[category] || { bg: '#eee', fg: '#333' };
   const src = thumb(format, c.bg, c.fg);
   const dl = `/content/dam/databricks/${name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}.${format.toLowerCase()}`;
-  return '<div>'
-    + imageCell(src, name)
-    + fieldCell(name) // imageAlt reuse omitted; alt already on img — but model expects alt cell next
-    + fieldCell(name)
-    + fieldCell(type)
-    + fieldCell(category)
-    + fieldCell(format)
-    + fieldCell(date)
-    + cell(`<p><a href="${dl}">${dl}</a></p>`)
-    + '</div>';
+  return `<div>${
+    imageCell(src, name)
+  }${fieldCell(name) // imageAlt reuse omitted; alt already on img — but model expects alt cell next
+  }${fieldCell(name)
+  }${fieldCell(type)
+  }${fieldCell(category)
+  }${fieldCell(format)
+  }${fieldCell(date)
+  }${cell(`<p><a href="${dl}">${dl}</a></p>`)
+  }</div>`;
 }
 
 const rows = [];

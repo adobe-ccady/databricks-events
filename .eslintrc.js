@@ -18,5 +18,12 @@ module.exports = {
     'import/extensions': ['error', { js: 'always' }], // require js file extensions in imports
     'linebreak-style': ['error', 'unix'], // enforce unix linebreaks
     'no-param-reassign': [2, { props: false }], // allow modifying properties of param
+    // DAM blocks expose several independently-authorable properties (facet
+    // dimensions, hero metadata) that are clearer as separate fields than
+    // element-grouped into one cell. Allow their specific cell counts.
+    'xwalk/max-cells': ['error', {
+      'asset-item': 7,
+      'collection-hero': 6,
+    }],
   },
 };
